@@ -1,15 +1,47 @@
-#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
-double calculate_coolness(double temperature, double windspeed) {
-  return 35.74 + 0.6215 * temperature - 35.75 * pow(windspeed, 0.16) +
-         0.4275 * temperature * pow(windspeed, 0.16);
+// the function to calculate coolness
+double calculate_coolness(double T, double V) {
+  return 35.74 + (0.6215 * T) - (35.75 * pow(V, 0.16)) + 0.4275 * T * pow(V, 0.16);
 }
 
-int main(void) {
-  double temperature = 20.5;
-  double windspeed = 10.2;
-  double coolness = calculate_coolness(temperature, windspeed);
-  printf("Coolness: %f\n", coolness);
-  return 0;
+int main(int argc, char *argv[]) {
+  // printing the default values when there are 0 arguments passed 
+  if (argc == 0){
+      printf("Temp\Wind\tCoolness\n");
+      for (int T = -10; T <= 40; T+= 10){
+	  for (double V = 5.0; V <= 15.0; V += 5.0) {
+	      double coolness = calculate_coolness(T,V);
+	      printf("%.1f\t%.1f\t%.1f\n", (double)T, V, coolness);
+}
+}
+}
+
+  // checking the number of arguments 
+  if (argc > 3) {
+     printf("Usage: ./coolness [temperature] [wind speed]\n");
+     exit(1);
+}
+
+  // determining how mant rows to print based on the number of arguments
+  int num_rows = 1; // defaults to only 1 row
+  if (argc == 3) {
+      num_rows = 1;
+} else if (argc == 2) {
+    num_rows = 11; // number of temperature rows
+}
+
+  // handling difference argument cases
+
+
+
+
+
+
+
+
+
+
 }
