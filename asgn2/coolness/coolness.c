@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     double T = atof(argv[1]);
     if (T >= -99.0 && T <= 50.0) {
        printf("Temp\tWind\tCoolness\n");
-       for (double V = 5.0; v <= 15.0; V += 5.0) {
+       for (double V = 5.0; V <= 15.0; V += 5.0) {
            double coolness = calculate_coolness(T,V);
            printf("%.1f\t%.1f\t%.1f\n", T, V, coolness);
 }
