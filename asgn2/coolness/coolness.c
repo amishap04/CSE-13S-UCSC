@@ -9,15 +9,16 @@ double calculate_coolness(double T, double V) {
 
 int main(int argc, char *argv[]) {
     // printing the default values when there are 0 arguments passed 
-    if (argc == 0){
+    if (argc == 1){
         printf("Temp\tWind\tCoolness\n");
-        for (int T = -10; T <= 40; T+= 10){
+        for (float T = -10; T <= 40; T+= 10){
 	    for (double V = 5.0; V <= 15.0; V += 5.0) {
 	        double coolness = calculate_coolness(T,V);
 	        printf("%.1f\t%.1f\t%.1f\n", (double)T, V, coolness);
 }
 }
-}
+} 
+exit(0);
 
     // checking the number of arguments 
     if (argc > 3) {
