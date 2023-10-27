@@ -8,11 +8,16 @@ double calculate_coolness(double T, double V) {
 }
 
 int main(int argc, char *argv[]) {
-    // printing the default values when there are 0 arguments passed 
+    int headers_printed = 0; // checker to see if headers have been printed   
+ // printing the default values when there are 0 arguments passed 
     if (argc == 1){
-        printf("Temp\tWind\tCoolness\n");
-        for (double T = -10; T <= 40; T+= 10) {
-            printf("\n");
+        for (int T = -10; T <= 40; T+= 10) {
+            if (!headers_printed){
+                printf("Temp\tWind\tCoolness\n"); // printing header once at start
+                headers_printed = 1; // set checker to show that header has been printed
+}           else{
+              printf("\n"); // adding a new line between each temp category
+}
 	    for (double V = 5.0; V <= 15.0; V += 5.0) {
 	        double coolness = calculate_coolness(T,V);
 	        printf("%.1f\t%.1f\t%.1f\n", (double)T, V, coolness);
