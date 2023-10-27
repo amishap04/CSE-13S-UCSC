@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 }
 
     // handling difference argument cases
-    if (argc == 0 || argc == 1) { // zero or 1 argument
+    if (argc == 1) { // zero or 1 argument
        printf("Temp\tWind\tCoolness\n");
        for (int T = -10; T <= 40; T += 10) {
            for (double V = 5.0; V <= 15.0; V += 5.0) {
