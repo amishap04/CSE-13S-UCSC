@@ -14,7 +14,8 @@ int main(int argc, char *argv[]) {
         for (float T = -10; T <= 40; T+= 10){
 	    for (double V = 5.0; V <= 15.0; V += 5.0) {
 	        double coolness = calculate_coolness(T,V);
-	        printf("%.1f\t%.1f\t%.1f\n", (double)T, V, coolness);
+                print_row(T, V, coolness);
+	       //  printf("%.1f\t%.1f\t%.1f\n", (double)T, V, coolness);
 }
 }
 } 
