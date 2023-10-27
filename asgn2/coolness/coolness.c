@@ -11,13 +11,13 @@ int main(int argc, char *argv[]) {
     // printing the default values when there are 0 arguments passed 
     if (argc == 1){
         printf("Temp\tWind\tCoolness\n");
-        for (float T = -10; T <= 40; T+= 10){
+        for (double T = -10; T <= 40; T+= 10) {
+            printf("\n");
 	    for (double V = 5.0; V <= 15.0; V += 5.0) {
 	        double coolness = calculate_coolness(T,V);
-                print_row(T, V, coolness);
-	       //  printf("%.1f\t%.1f\t%.1f\n", (double)T, V, coolness);
+	        printf("%.1f\t%.1f\t%.1f\n", (double)T, V, coolness);
 }
-}
+} 
 } 
 
     // checking the number of arguments 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 }
 
     // handling difference argument cases
-    if (argc == 1) { // zero or 1 argument
+    if (argc == 1) { // 1 argument
        printf("Temp\tWind\tCoolness\n");
        for (int T = -10; T <= 40; T += 10) {
            for (double V = 5.0; V <= 15.0; V += 5.0) {
@@ -80,6 +80,6 @@ int main(int argc, char *argv[]) {
 
 
 
-return 0;
+    exit(0);
 
 }
