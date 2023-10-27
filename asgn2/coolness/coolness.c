@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
 }
 }
 } 
-exit(0);
 
     // checking the number of arguments 
     if (argc > 3) {
