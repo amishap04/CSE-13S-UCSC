@@ -1,36 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define NUM_BINS 16
+
+void printHistogram(int bins[], int binSize, int range);
 
 int main() {
-    int bin_size = 1;
-    int bins[16] = {0};
-    int range = 16;
-    int input;
+    int bins[NUM_BINS] = {0};
+    int binSize = 1;
+    int range = NUM_BINS;
+    int num;
 
+    while (scanf("%d", &num) != EOF) {
+        if (num < 0) {
+            continue; // Ignore negative numbers.
+        }
 
-    while (scanf("%d", &input) != EOF) {
-        if (input >= range) {
-           // double the range and bin size
-           bin_size *= 2;
-           range *= 2;
+        // If the number is outside the range, expand the bins.
+        while (num >= range) {
+            // Compress current bins into the first half.
+            for (int i = 0; i < NUM_BINS / 2; i++) {
+                bins[i] = bins[2 * i] + bins[2 * i + 1];
+            }
 
-           // compressing the 16 bins into the first 8 bins
-           for (int i = 0; i < 8; i++) {
-               bins[i] = bins[i] + bins[i + 8];
-               bins[i + 8] = 0;
-}
-}
+            // Clear the second half of the bins.
+            for (int i = NUM_BINS / 2; i < NUM_BINS; i++) {
+                bins[i] = 0;
+            }
 
-        // calculate the bin index for the input
-        int bin_index = input / bin_size;
-        bins[bin_index]++;
-}
+            // Double the bin size and range.
+            binSize *= 2;
+            range *= 2;
+        }
 
-    // printing the histogram
-    for (int i = 0; i < 16; i++) {
-        printf("%3d - %3d : ~d\n", i * bin_size, (i + 1) * bin_size - 1, int num_bins, bin_size, int max_value);
-}
+        // Increment the appropriate bin.
+        bins[num / binSize]++;
+    }
+
+    // Print the histogram.
+    printHistogram(bins, binSize, range);
 
     return 0;
+}
+
+void printHistogram(int bins[], int binSize, int range) {
+    printf("Histogram (bin size: %d, range: 0 to %d):\n", binSize, range - 1);
+    for (int i = 0; i < NUM_BINS; i++) {
+        printf("%3d - %3d : ", i * binSize, (i + 1) * binSize - 1);
+        for (int j = 0; j < bins[i]; j++) {
+            printf("#");
+        }
+        printf("\n");
+    }
 }
