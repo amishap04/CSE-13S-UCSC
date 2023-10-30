@@ -29,7 +29,7 @@ int main() {
 
     // printing the histogram
     for (int i = 0; i < 16; i++) {
-        printf("%3d - %3d : %d\n", i * bin_size, (i + 1) * bin_size - 1, int num_bins, bin_size, int max_value);
+        printf("%3d - %3d : ~d\n", i * bin_size, (i + 1) * bin_size - 1, int num_bins, bin_size, int max_value);
 }
 
     return 0;
