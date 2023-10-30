@@ -1,1 +1,2 @@
 *.o
+!testing.out
