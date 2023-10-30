@@ -1,36 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define NUM_BINS 16
 
-int main(void) {
-    int bins[NUM_BINS];
-    int max_value = 0;
+
+int main() {
+    int bin_size = 1;
+    int bins[16] = {0};
+    int range = 16;
     int input;
 
-    // Initialize bins to 0
-    for (int i = 0; i < NUM_BINS; i++) {
-        bins[i] = 0;
-    }
-    // Read input and update bins
+
     while (scanf("%d", &input) != EOF) {
-        if (input < 0) {
-            continue;
-        }
-        // Update max_value if necessary
-        if (input > max_value) {
-            max_value = input;
-        }
-        // Calculate bin index and increment bin count
-        int bin_index = input * NUM_BINS / max_value;
+        if (input >= range) {
+           // double the range and bin size
+           bin_size *= 2;
+           range *= 2;
+
+           // compressing the 16 bins into the first 8 bins
+           for (int i = 0; i < 8; i++) {
+               bins[i] = bins[i] + bins[i + 8];
+               bins[i + 8] = 0;
+}
+}
+
+        // calculate the bin index for the input
+        int bin_index = input / bin_size;
         bins[bin_index]++;
-    }
-    // Print histogram
-    for (int i = 0; i < NUM_BINS; i++) {
-        printf("%2d - %2d : ", i * max_value / NUM_BINS, (i + 1) * max_value / NUM_BINS);
-        for (int j = 0; j < bins[i]; j++) {
-            printf("*");
-        }
-        printf("\n");
-    }
+}
+
+    // printing the histogram
+    for (int i = 0; i < 16; i++) {
+        printf("%3d - %3d : %d\n", i * bin_size, (i + 1) * bin_size - 1);
+}
+
     return 0;
 }
