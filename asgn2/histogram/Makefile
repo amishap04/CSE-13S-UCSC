@@ -14,4 +14,3 @@ histogram : histogram.o
 
 clean:
 	rm -f histogram histogram.o
-
