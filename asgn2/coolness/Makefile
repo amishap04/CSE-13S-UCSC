@@ -15,4 +15,4 @@ coolness : coolness.o
 
 
 clean:
-        rm -f coolness coolness.o
+	rm -f coolness coolness.o
