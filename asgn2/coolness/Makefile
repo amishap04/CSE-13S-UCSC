@@ -4,7 +4,6 @@ CC = gcc
 SOURCES = $(wildcard *.c)
 OBJECTS = $(subst .c,.o,$(SOURCES))
 
-.PHONY: clean
 
 all : coolness 
 
@@ -13,3 +12,7 @@ coolness : coolness.o
 
 %.o : %.c
 	$(CC) -c $<
+
+
+clean:
+        rm -f coolness coolness.o
