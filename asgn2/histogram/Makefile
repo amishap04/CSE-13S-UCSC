@@ -13,5 +13,5 @@ histogram : histogram.o
 	$(CC) -c $<
 
 clean:
-        rm -f histogram histogram.o
+	rm -f histogram histogram.o
 
