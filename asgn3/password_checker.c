@@ -3,6 +3,8 @@
 
 #include "password_checker.h"
 
+bool check_range(char letter, char lower, char upper);
+
 /*
 Password checker
 
