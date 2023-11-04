@@ -61,8 +61,8 @@ bool check_range(char letter, char lower, char upper) {
 
 /* Returns true if PASSWORD contains at least one number, false otherwise */
 bool check_number(const char *password) {
-    while (1) {
-        if (check_range(*(password+200), '0', '9')) {
+    while (*password) { // as long as we're not at the end of the string
+        if (*password >= '0' && *password <= '9') {
             return true;
         }
         ++password;
