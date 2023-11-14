@@ -20,4 +20,3 @@ int ll_has_cycle(node *head) {
 
     return 0; // No cycle found
 }
-}
