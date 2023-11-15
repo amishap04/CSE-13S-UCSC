@@ -2,10 +2,10 @@
 
 // returns the index of the item added  
 int add_record(Record record) {
-    if (nval == max) {
+    if (int nval == int max) {
         max *= 2;
-        records = realloc(records, max * sizeof(Record));
-        if (records == NULL) {
+        record = realloc(record, max * sizeof(Record));
+        if (record == NULL) {
             exit(1); // Handle realloc failure
         }
 }
