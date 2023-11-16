@@ -15,7 +15,7 @@ int add_record(Record record) {
     }
 
     // Add the new record
-    table.record[table.nval] = get_record;
+    table.record[table.nval] = record;
     return table.nval++; // Return index of the added record and increment nval
 }
 
