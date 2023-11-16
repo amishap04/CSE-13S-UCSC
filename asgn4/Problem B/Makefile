@@ -6,12 +6,12 @@ OBJECTS = growing_arrays.o test_growing_arrays.o
 HEADER = growing_arrays.h
 
 
-growing_array : ${OBJ} ${HEADER}
-        $(CC) $(OBJ) $(LFLAGS) -o growing_array
+growing_array : ${OBJECTS} ${HEADER}
+	$(CC) $(OBJECTS) $(LFLAGS) -o growing_array
 
 %.o : %.c $(HEADER)
-        $(CC) $< -c
+	$(CC) $< -c
 
 clean:
-        rm -rf growing_array
-        rm -rf *.o
+	rm -rf growing_array
+	rm -rf *.o
