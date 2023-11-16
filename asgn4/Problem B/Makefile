@@ -1,20 +1,17 @@
 CC = gcc
-CFLAGS=-Wall -Wextra -Wpedantic
+LFLAGS=-Wall -Wextra -Wpedantic
 
-TARGET=growing_arrays
+SOURCES = growing_arrays.c test_growing_arrays.c
+OBJECTS = growing_arrays.o test_growing_arrays.o
+HEADER = growing_arrays.h
 
-OBJ=growing_arrays.o main.o
 
-all: $(TARGET)
+growing_array : ${OBJ} ${HEADER}
+        $(CC) $(OBJ) $(LFLAGS) -o growing_array
 
-$(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
-
-growing_arrays.o: growing_arrays.c growing_arrays.h
-	$(CC) $(CFLAGS) -c $<
-
-main.o: main.c growing_arrays.h
-	$(CC) $(CFLAGS) -c $<
+%.o : %.c $(HEADER)
+        $(CC) $< -c
 
 clean:
-	rm -f $(TARGET) $(OBJ)
+        rm -rf growing_array
+        rm -rf *.o
