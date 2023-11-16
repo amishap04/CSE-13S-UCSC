@@ -60,7 +60,7 @@ Record empty_record = {0};
 int main() {
     amisha_table.nval = 0;
     amisha_table.max = INIT_SIZE;
-    amisha_table.record = malloc(sizeof(Record) * shanaya_table.max);
+    amisha_table.record = malloc(sizeof(Record) * amisha_table.max);
 
     // test add_record
     Record r1 = {"Alice", 1};
