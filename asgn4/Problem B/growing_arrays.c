@@ -17,24 +17,21 @@ int add_record(Record new_record) {
 // return 1 if there is a matching record and deletes it and 
 // moves records
 int del_record(const char *name) {
-    for (int i = 0; i < table.nval; i++) {
-        if (strcmp(table.record[i].name, name) == 0) {
-            // Found the record, shift the rest of the array down
-            if (i < table.nval - 1) {
-                memmove(&table.record[i], &table.record[i + 1], (table.nval - i - 1) * sizeof(Record));
-            }
-            table.nval--;
-            return 1; // Record deleted
+    for (int i = 0; i < amisha_table.nval; i++) {
+        if (strcmp(amisha_table.record[i].name, name) == 0) {
+            memmove(&amisha_table.record[i], &amisha_table.record[i + 1], (amisha_table.nval - i - 1) * sizeof(Record));
+            amisha_table.nval--;
+            return 1;
         }
     }
-    return 0; // No record found
-}
+    return 0; // No matching record found
+}  
 
 // returns id of student record of the first matching record
 int get_id(const char *name) {
-    for (int i = 0; i < table.nval; i++) {
-        if (strcmp(table.record[i].name, name) == 0) {
-            return table.record[i].id;
+    for (int i = 0; i < amisha_table.nval; i++) {
+        if (strcmp(amisha_table.record[i].name, name) == 0) {
+            return amisha_table.record[i].id;
         }
     }
     return 0; // No record found
@@ -42,8 +39,8 @@ int get_id(const char *name) {
 
 // returns record with a valid index, 0 to max-1 
 Record get_record(int index) {
-    assert(index >= 0 && index < table.nval); // Assert that index is valid
-    return table.record[index];
+    assert(index >= 0 && index < amisha_table.nval); // Assert that index is valid
+    return amisha_table.record[index];
 }
 
 // Testing code. You can modify this and check your own test cases.
