@@ -2,21 +2,22 @@
 
 // returns the index of the item added  
 int add_record(Record record) {
-    // Resize the array if necessary
     if (table.nval == table.max) {
-        int new_max = table.max == 0 ? INIT_SIZE : table.max * GROW_SIZE;
-        Record *new_records = realloc(table.record, new_max * sizeof(Record));
-        if (new_records == NULL) {
-            perror("realloc failed");
-            exit(EXIT_FAILURE);
+        // Resize the array when full
+        int newSize = table.max * GROW_SIZE;
+        Record *newRecords = realloc(table.record, sizeof(Record) * newSize);
+        if (!newRecords) {
+            // Handle memory allocation failure
+            return -1;
         }
-        table.record = new_records;
-        table.max = new_max;
+        table.record = newRecords;
+        table.max = newSize;
     }
 
     // Add the new record
     table.record[table.nval] = record;
-    return table.nval++; // Return index of the added record and increment nval
+    table.nval++;
+    return table.nval - 1; // Return the index of the new record
 }
 
 // return 0 if there is no matching record
