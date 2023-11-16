@@ -9,7 +9,7 @@ struct Table amisha_table;
 int add_record(Record new_record) {
     if (amisha_table.nval == amisha_table.max) {
         // The array should grow to two times the existing size
-        int new_size = amisha_table.max *= 2;
+        int new_size = amisha_table.max *= GROW_SIZE;
         Record *new_records = realloc(amisha_table.record, new_size * sizeof(Record));
         if (!new_records) return -1;
         amisha_table.record = new_records;
