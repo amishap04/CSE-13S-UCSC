@@ -18,5 +18,3 @@ main.o: main.c growing_arrays.h
 
 clean:
 	rm -f $(TARGET) $(OBJ)
-
-.PHONY: all clean
