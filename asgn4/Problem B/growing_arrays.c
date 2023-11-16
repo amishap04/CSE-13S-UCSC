@@ -1,4 +1,5 @@
 #include "growing_arrays.h"
+struct Table amisha_table;
 
 // returns the index of the item added  
 int add_record(Record new_record) {
