@@ -23,17 +23,33 @@ int add_record(Record record) {
 // return 1 if there is a matching record and deletes it and 
 // moves records
 int del_record(const char *name) {
-    // Your code here
+    for (int i = 0; i < table.nval; i++) {
+        if (strcmp(table.record[i].name, name) == 0) {
+            // Found the record, shift the rest of the array down
+            if (i < table.nval - 1) {
+                memmove(&table.record[i], &table.record[i + 1], (table.nval - i - 1) * sizeof(Record));
+            }
+            table.nval--;
+            return 1; // Record deleted
+        }
+    }
+    return 0; // No record found
 }
 
 // returns id of student record of the first matching record
 int get_id(const char *name) {
-    // Your code here
+    for (int i = 0; i < table.nval; i++) {
+        if (strcmp(table.record[i].name, name) == 0) {
+            return table.record[i].id;
+        }
+    }
+    return 0; // No record found
 }
 
 // returns record with a valid index, 0 to max-1 
 Record get_record(int index) {
-    // Your code here
+    assert(index >= 0 && index < table.nval); // Assert that index is valid
+    return table.record[index];
 }
 
 // Testing code. You can modify this and check your own test cases.
