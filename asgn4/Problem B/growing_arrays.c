@@ -1,23 +1,16 @@
 #include "growing_arrays.h"
 
 // returns the index of the item added  
-int add_record(Record record) {
-    if (table.nval == table.max) {
-        // Resize the array when full
-        int newSize = table.max * GROW_SIZE;
-        Record *newRecords = realloc(table.record, sizeof(Record) * newSize);
-        if (!newRecords) {
-            // Handle memory allocation failure
-            return -1;
-        }
-        table.record = newRecords;
-        table.max = newSize;
-    }
-
-    // Add the new record
-    table.record[table.nval] = record;
-    table.nval++;
-    return table.nval - 1; // Return the index of the new record
+int add_record(Record new_record) {
+        // The array should grow to two times the existing size
+        int new_size = amisha_table.max * GROW_SIZE;
+        Record *new_records = realloc(amisha_table.record, new_size * sizeof(Record));
+        if (!new_records) return -1;
+        amisha_table.record = new_records;
+        amisha_table.max = new_size;
+    amisha_table.record[amisha_table.nval] = new_record;
+    amisha_table.nval++;
+    return amisha_table.nval - 1;
 }
 
 // return 0 if there is no matching record
