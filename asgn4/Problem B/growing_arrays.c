@@ -58,9 +58,9 @@ Record empty_record = {0};
 // Testing code. You can modify this and check your own test cases.
 /*
 int main() {
-    shanaya_table.nval = 0;
-    shanaya_table.max = INIT_SIZE;
-    shanaya_table.record = malloc(sizeof(Record) * shanaya_table.max);
+    amisha_table.nval = 0;
+    amisha_table.max = INIT_SIZE;
+    amisha_table.record = malloc(sizeof(Record) * shanaya_table.max);
 
     // test add_record
     Record r1 = {"Alice", 1};
