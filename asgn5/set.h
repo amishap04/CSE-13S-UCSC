@@ -1,6 +1,7 @@
 #ifndef SET_H_
 #define SET_H_
 
+typedef struct *set set_t
 
 /* Create a new (empty) set; return NULL if error. */
 set_t* set_new(void);
