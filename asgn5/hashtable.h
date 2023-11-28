@@ -2,6 +2,12 @@
 #define HASH_H_
 
 
+#include <stdbool.h>
+#include <stdio.h>
+
+typedef struct hashtable hashtable_t; // Forward declaration
+
+
 /* Create a new (empty) hashtable; return NULL if error. */
 hashtable_t *hashtable_new(const int num_slots);
 
