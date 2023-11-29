@@ -1,7 +1,10 @@
-#ifndef SET_H_
 #define SET_H_
 
-typedef struct *set set_t
+typedef struct *set set_t;
+struct set_t{
+	char* key;
+	void* item;
+};
 
 /* Create a new (empty) set; return NULL if error. */
 set_t* set_new(void);
