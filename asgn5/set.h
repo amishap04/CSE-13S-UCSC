@@ -1,6 +1,6 @@
 #define SET_H_
 
-typedef struct *set set_t;
+typedef struct set set_t;
 struct set_t{
 	char* key;
 	void* item;
