@@ -1,4 +1,8 @@
+#ifndef SET_H_
 #define SET_H_
+
+#include <stdbool.h>
+#include <stdio.h>
 
 typedef struct set set_t;
 
