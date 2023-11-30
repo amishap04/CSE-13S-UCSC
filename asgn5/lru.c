@@ -170,7 +170,7 @@ void lru_delete(lru_t *lru, void (*itemdelete)(void *item)) {
             itemdelete(current->item);
         }
 
-        hashtable_delete(lru->table, itemdelete);
+       // hashtable_delete(lru->table, itemdelete);
         free(current->key);
         free(current);
 
