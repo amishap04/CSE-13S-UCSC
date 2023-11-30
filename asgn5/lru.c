@@ -70,9 +70,9 @@ static void remove_lru(lru_t *lru) {
     lru->tail = old_tail->prev;
     if (lru->tail) {
         lru->tail->next = NULL;
+}
 
-
-    hashtable_delete(lru->table, old_tail->key); // Assuming hashtable_delete removes an item
+    // hashtable_delete(lru->table, old_tail->key); 
     free(old_tail->key);
     free(old_tail);
 }
@@ -98,13 +98,15 @@ bool lru_insert(lru_t *lru, const char *key, void *item) {
     }
 
     void *found = hashtable_find(lru->table, key);
-    if (found != NULL) {
+    if (found == NULL) {
         // Update existing item
-        node_t *node = found;
+        node_t *node = calloc(size_of(node_t));
         node->item = item;
         move_to_front(lru, node);
         return true;
-    }
+    } else {
+	return false;
+}
 
     if (lru->size >= lru->capacity) {
         // Remove least recently used item
@@ -173,7 +175,7 @@ void lru_delete(lru_t *lru, void (*itemdelete)(void *item)) {
             itemdelete(current->item);
         }
 
-        hashtable_delete(lru->table, current->key);
+        hashtable_delete(lru->table, itemdelete);
         free(current->key);
         free(current);
 
