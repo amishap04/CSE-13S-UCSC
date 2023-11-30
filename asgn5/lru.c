@@ -70,9 +70,11 @@ static void remove_lru(lru_t *lru) {
     lru->tail = old_tail->prev;
     if (lru->tail) {
         lru->tail->next = NULL;
+} else {
+	lru->head = NULL;
 }
 
-    // hashtable_delete(lru->table, old_tail->key); 
+    hashtable_delete(lru->table, old_tail->key); 
     free(old_tail->key);
     free(old_tail);
 }
