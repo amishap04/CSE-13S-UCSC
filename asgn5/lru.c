@@ -93,18 +93,13 @@ lru_t *lru_new(const int capacity) {
 }
 
 bool lru_insert(lru_t *lru, const char *key, void *item) {
-    if (lru == NULL || key == NULL) {
+    if (lru == NULL || key == NULL || item == NULL) {
         return false;
     }
 
     void *found = hashtable_find(lru->table, key);
-    if (found == NULL) {
-        // Update existing item
-        node_t *node = calloc(size_of(node_t));
-        node->item = item;
-        move_to_front(lru, node);
-        return true;
-    } else {
+
+    if (found != NULL) {
 	return false;
 }
 
