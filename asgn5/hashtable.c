@@ -50,7 +50,7 @@ static int hash(const char *key, int num_slots) {
 }
 
 bool hashtable_insert(hashtable_t *ht, const char *key, void *item) {
-    if (ht == NULL || key == NULL) {
+    if (ht == NULL || key == NULL || item == NULL) {
         return false;
     }
 

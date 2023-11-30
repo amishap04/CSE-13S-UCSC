@@ -24,7 +24,7 @@ set_t* set_new(void) {
 }
 
 bool set_insert(set_t *set, const char *key, void *item) {
-    if (set == NULL || key == NULL) {
+    if (set == NULL || key == NULL || item == NULL) {
         return false;
     }
 
