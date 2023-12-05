@@ -28,4 +28,11 @@ static void pageScan(webpage_t *page, bag_t *pagesToCrawl, hashtable_t *pagesSee
 
 int main(const int argc, char *argv[]) {
 	// Fill in with your implementation
+	char *seedURL, *pageDirectory;
+	int maxDepth;
+
+	parseArgs(argc, argv, &seedURL, &pageDirectory, &maxDepth);
+	crawl(seedURL, pageDirectory, maxDepth);
+
+	return 0;
 }
