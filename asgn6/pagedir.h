@@ -13,6 +13,7 @@
  */
 bool pagedir_init(const char *pageDirectory);
 
+
 /**
  * Saves a given webpage to a given page directory with a given document ID.
  */

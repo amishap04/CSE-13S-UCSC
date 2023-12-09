@@ -24,8 +24,14 @@ typedef struct {
     int size;
 } bag_t;
 
+typedef struct node_h {
+    char *data;
+    struct node_h *next;
+} node_h;
+
+
 typedef struct {
-	int i;
+    node_h *head;
 } hashtable_t;
 
 #endif

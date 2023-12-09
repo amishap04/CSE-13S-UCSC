@@ -26,8 +26,12 @@ bool pagedir_init(const char *pageDirectory) {
     return true;
 }
 
+
+
+
+
+
 void pagedir_save(const webpage_t *page, const char *pageDirectory, const int documentID) {
-	// Fill in with your implementation
 
 	// creating filename first
 	char str2[200];

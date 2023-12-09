@@ -4,12 +4,25 @@
 #include "pagedir.h"
 #include "crawler.h"
 #include "curl.h"
+#include "url.h"
 
 static void pageScan(webpage_t *page, bag_t *pagesToCrawl, hashtable_t *pagesSeen);
+
 bag_t *create_bag();
 void enqueue(bag_t *bag, webpage_t *page);
 webpage_t *dequeue(bag_t *bag);
 int is_bag_empty(bag_t *bag);
+
+bool endsWithHash(const char *str);
+
+hashtable_t *create_hashtable();
+void add_to_hashtable(hashtable_t *hashtable, const char *data);
+bool contains_in_hashtable(hashtable_t *hashtable, const char *data);
+void free_hashtable(hashtable_t *hashtable);
+
+bool containsMailto(const char *str);
+
+bool isStringEmpty(const char *str);
 
 
 /**
@@ -37,6 +50,7 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 	int next_doc_ID = 1;
 
 	bag_t *url_bag = create_bag();
+	hashtable_t *seenURLTable = create_hashtable();
 
 	// making a webpage_t for seedUR
 	webpage_t *seedURLwp = malloc(sizeof(webpage_t));
@@ -44,72 +58,35 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 	seedURLwp->depth = 0;
 
 	enqueue(url_bag, seedURLwp);
+	add_to_hashtable(seenURLTable, seedURLwp->url);
 
 	while(!is_bag_empty(url_bag)){
 
-		printf("webpage added to bag");
+		// printf("webpage added to bag");
 		webpage_t * currentWP = dequeue(url_bag);
 		currentWP->html = download(currentWP->url, &currentWP->length);
-		pagedir_save(currentWP, pageDirectory, next_doc_ID++);
-		hashtable_t *ht = malloc(sizeof(hashtable_t)); // TO BE FINISHED
-		pageScan(currentWP,url_bag, ht);
-	
-		printf("next doc id is: %d",next_doc_ID);
-		if(next_doc_ID > 2){
-			//break;
+
+		if(!isStringEmpty(currentWP->html)){
+			pagedir_save(currentWP, pageDirectory, next_doc_ID++);
 		}
+
+
+		// pagedir_save(currentWP, pageDirectory, next_doc_ID++);
+		// hashtable_t *ht = malloc(sizeof(hashtable_t)); // TO BE FINISHED
+
+		if(currentWP->depth <= maxDepth){
+			pageScan(currentWP,url_bag, seenURLTable);
+		}
+
+		// pageScan(currentWP,url_bag, seenURLTable);
+	
+		// printf("next doc id is: %d\n",next_doc_ID);
+		// if(next_doc_ID > 2){
+			//break;
+		// }
 
 	}	
 
-	// seedURLwp->html = download(seedURLwp->url, &seedURLwp->length);
-	
-	// size_t size_out;
-	// char *url_content = download(seedURL, &size_out);
-
-
-	// printf("%lu", size_out);
-
-	// char full_path_filename[500];
-	// strcpy(full_path_filename, pageDirectory);
-	// char file_name[] = "2.txt";
-	// full_path_filename = strcat(full_path_filename, file_name);
-
-	// printf("%s", full_path_filename);
-
-
-
-
-	// char *str1 = "Hello, ";  // This is a string literal, and it's read-only.
-    	// char str2[200];
-
-	// Concatenate str2 onto result
-        // sprintf(str2, "%d", next_doc_ID);
-
-    	// Since str1 points to a read-only location, we can't directly concatenate str2 to it.
-    	// We need a writable array that is large enough for both strings.
-    	// char result[500];
-
-    	// Copy str1 into result
-    	// strcpy(result, pageDirectory);
-	// strcat(result, str2);
-
-
-	// printf("%s", result);
-	// saveToFile(result, url_content);
-	// pagedir_save(seedURLwp, pageDirectory, next_doc_ID);
-
-
-	// bag_t *bag = malloc(sizeof(bag_t));
-	// hashtable_t *ht = malloc(sizeof(hashtable_t));
-
-
-
-	// pageScan(seedURLwp, bag, ht);
-
-
-// printf("C Seed URL: %s\n", seedURL);
-      // printf("C Page Directory: %s\n", pageDirectory);
-      // printf("C Max Depth: %d\n", maxDepth);
 }
 
 /**
@@ -150,12 +127,59 @@ while ((start = strstr(current, startPattern)) != NULL) {
             url[urlLength] = '\0';
 
             // Print the URL
-            printf("URL Found: %s\n", url);
+            // printf("URL Found: %s\n", url);
 
-	    childURL = malloc(sizeof(webpage_t));
-            childURL->url = url;
-            childURL->depth = child_url_depth; 
-            enqueue(pagesToCrawl, childURL);	
+
+	    char *spaceChar = strchr(url, ' ');
+    	    if (spaceChar != NULL) {
+        		*spaceChar = '\0'; // Replace the space with a null terminator
+    		}
+
+	    if(!endsWithHash(url)){
+
+		url = normalizeURL(page->url,url);
+ 
+         	if(url != NULL){
+
+			if(!contains_in_hashtable(pagesSeen, url)){
+
+				if(isInternalURL(page->url,url) == true){
+                                 childURL = malloc(sizeof(webpage_t));
+                                 childURL->url = url;
+                                 childURL->depth = child_url_depth;
+ 
+                                 // printf("URL added to queue: %s\n", childURL->url);
+                                 add_to_hashtable(pagesSeen, childURL->url);
+
+
+				bool enqueueOK = true;
+				if(containsMailto(url)){
+					enqueueOK = false;
+				}
+
+				// printf("%b", enqueueOK);
+
+
+				if(enqueueOK == true){
+					enqueue(pagesToCrawl, childURL);
+					printf("URL added to queue: %s\n", childURL->url);
+				}
+
+                          }
+
+
+
+
+			}
+			else{
+				//printf("value was in hashtable\n\n\n");
+			}
+
+ 
+      	 	}
+
+	}
+
 
 
             // Free the allocated memory
@@ -228,6 +252,76 @@ webpage_t *dequeue(bag_t *bag) {
 int is_bag_empty(bag_t *bag) {
     return bag->size == 0;
 }
+
+
+bool endsWithHash(const char *str) {
+    size_t len = strlen(str);
+    if (len == 0) {
+        return false; // Empty string
+    }
+    return str[len - 1] == '#';
+}
+
+
+// Function to create a new hashtable
+hashtable_t *create_hashtable() {
+    hashtable_t *hashtable = malloc(sizeof(hashtable_t));
+    if (hashtable == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return NULL;
+    }
+    hashtable->head = NULL;
+    return hashtable;
+}
+
+// Function to add an item to the hashtable
+void add_to_hashtable(hashtable_t *hashtable, const char *data) {
+    node_h *newNode = malloc(sizeof(node_h));
+    if (newNode == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
+    }
+    newNode->data = strdup(data); // Duplicate the string
+    newNode->next = hashtable->head;
+    hashtable->head = newNode;
+}
+
+// Function to check if an item is in the hashtable
+bool contains_in_hashtable(hashtable_t *hashtable, const char *data) {
+    node_h *current = hashtable->head;
+    while (current != NULL) {
+        if (strcmp(current->data, data) == 0) {
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
+
+// Function to free the hashtable
+void free_hashtable(hashtable_t *hashtable) {
+    node_h *current = hashtable->head;
+    while (current != NULL) {
+        node_h *temp = current;
+        current = current->next;
+        free(temp->data);
+        free(temp);
+    }
+    free(hashtable);
+}
+
+
+bool containsMailto(const char *str) {
+    return strstr(str, "mailto:") != NULL;
+}
+
+
+
+bool isStringEmpty(const char *str) {
+    // Check if the pointer is NULL or points to an empty string
+    return str == NULL || *str == '\0';
+}
+
 
 
 
