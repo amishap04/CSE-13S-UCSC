@@ -60,14 +60,23 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 	enqueue(url_bag, seedURLwp);
 	add_to_hashtable(seenURLTable, seedURLwp->url);
 
+	add_to_hashtable(seenURLTable, "https://engineering.ucsc.edu\"");
+
 	while(!is_bag_empty(url_bag)){
 
 		// printf("webpage added to bag");
 		webpage_t * currentWP = dequeue(url_bag);
 		currentWP->html = download(currentWP->url, &currentWP->length);
 
+		printf("URL under process is: %s\n", currentWP->url);
+
 		if(!isStringEmpty(currentWP->html)){
+			printf("URL being saved is %s\n", currentWP->url);
+
+
 			pagedir_save(currentWP, pageDirectory, next_doc_ID++);
+
+			printf("URL saved %s\n", currentWP->url);
 		}
 
 
