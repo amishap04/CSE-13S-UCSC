@@ -2,7 +2,9 @@
 #define PAGEDIR_H
 
 #include <stdbool.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 #include "crawler.h"
 
 /**
@@ -16,4 +18,5 @@ bool pagedir_init(const char *pageDirectory);
  */
 void pagedir_save(const webpage_t *page, const char *pageDirectory, const int documentID);
 
+void saveToFile(const char *filename, const char *data);
 #endif

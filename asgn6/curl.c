@@ -64,6 +64,7 @@ char * download(const char *url, size_t *size_out) {
 	curl_easy_setopt(curl, CURLOPT_VERBOSE, 0l);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
 	curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36");
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1l);
 
 	int err = curl_easy_perform(curl);
 	curl_easy_cleanup(curl);
