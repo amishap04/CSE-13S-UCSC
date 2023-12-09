@@ -17,6 +17,7 @@ static void parseArgs(const int argc, char *argv[], char **seedURL, char **pageD
 
     *seedURL = argv[1];
     *pageDirectory = argv[2];
+	// add check for last character to be "/"
     *maxDepth = atoi(argv[3]);
 
 }
@@ -27,13 +28,17 @@ static void parseArgs(const int argc, char *argv[], char **seedURL, char **pageD
 static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
       
 	int next_doc_ID = 1;
+
+	// making a webpage_t for seedUR
 	webpage_t *seedURLwp = malloc(sizeof(webpage_t));
 	seedURLwp->url = seedURL;
 	seedURLwp->depth = 0;
 
+	seedURLwp->html = download(seedURLwp->url, &seedURLwp->length);
+	
+	// size_t size_out;
+	// char *url_content = download(seedURL, &size_out);
 
-	size_t size_out;
-	char *url_content = download(seedURL, &size_out);
 
 	// printf("%lu", size_out);
 
@@ -48,20 +53,23 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 
 
 	// char *str1 = "Hello, ";  // This is a string literal, and it's read-only.
-    	char str2[] = "/2.txt";
+    	// char str2[200];
+
+	// Concatenate str2 onto result
+        // sprintf(str2, "%d", next_doc_ID);
 
     	// Since str1 points to a read-only location, we can't directly concatenate str2 to it.
     	// We need a writable array that is large enough for both strings.
-    char result[500];
+    	// char result[500];
 
     	// Copy str1 into result
-    	strcpy(result, pageDirectory);
+    	// strcpy(result, pageDirectory);
+	// strcat(result, str2);
 
-    	// Concatenate str2 onto result
-    	strcat(result, str2);
 
-	printf("%s", result);
-	saveToFile(result, url_content);
+	// printf("%s", result);
+	// saveToFile(result, url_content);
+	pagedir_save(seedURLwp, pageDirectory, next_doc_ID);
 
 // printf("C Seed URL: %s\n", seedURL);
       // printf("C Page Directory: %s\n", pageDirectory);

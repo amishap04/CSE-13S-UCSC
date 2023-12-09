@@ -2,8 +2,8 @@
 #define CRAWLER_H
 
 #include <stddef.h>
-#include "set.h"
-#include "hashtable.h"
+//#include "set.h"
+//#include "hashtable.h"
 
 typedef struct {
 	char *url;
@@ -13,7 +13,7 @@ typedef struct {
 } webpage_t;
 
 typedef struct {
-	set_t bag;
+	// set_t bag;
 } bag_t;
 
 typedef struct {

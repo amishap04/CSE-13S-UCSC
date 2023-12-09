@@ -1,4 +1,6 @@
 #include "pagedir.h"
+#include <string.h>
+
 
 bool pagedir_init(const char *pageDirectory) {
 	// Fill in with your implementation
@@ -26,6 +28,29 @@ bool pagedir_init(const char *pageDirectory) {
 
 void pagedir_save(const webpage_t *page, const char *pageDirectory, const int documentID) {
 	// Fill in with your implementation
+
+	// creating filename first
+	char str2[200];
+
+        // Concatenate str2 onto result
+        sprintf(str2, "%d", documentID);
+
+        // Since str1 points to a read-only location, we can't directly concatenate str2 to it.
+        // We need a writable array that is large enough for both strings.
+        char filename[500];
+
+        // Copy str1 into result
+        strcpy(filename, pageDirectory);
+        strcat(filename, str2);
+
+
+FILE *file = fopen(filename, "w");  // Open the file for writing
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
+    }
+    fprintf(file, "%s", page->html);  // Write the data to the file
+    fclose(file);  // Close the file
 }
 
 void saveToFile(const char *filename, const char *data) {
