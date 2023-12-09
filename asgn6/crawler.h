@@ -12,8 +12,16 @@ typedef struct {
 	int depth;
 } webpage_t;
 
+typedef struct node {
+    webpage_t *page;
+    struct node *next;
+} node_t;
+
+
 typedef struct {
-	int i;
+    node_t *head;
+    node_t *tail;
+    int size;
 } bag_t;
 
 typedef struct {
