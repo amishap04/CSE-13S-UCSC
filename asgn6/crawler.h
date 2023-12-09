@@ -13,11 +13,11 @@ typedef struct {
 } webpage_t;
 
 typedef struct {
-	// set_t bag;
+	int i;
 } bag_t;
 
 typedef struct {
-	// Fill in with your implementation
+	int i;
 } hashtable_t;
 
 #endif

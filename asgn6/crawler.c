@@ -5,6 +5,8 @@
 #include "crawler.h"
 #include "curl.h"
 
+static void pageScan(webpage_t *page, bag_t *pagesToCrawl, hashtable_t *pagesSeen);
+
 /**
  * Parses command-line arguments, placing the corresponding values into the pointer arguments seedURL,
  * pageDirectory and maxDepth. argc and argv should be passed in from the main function.
@@ -71,6 +73,15 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 	// saveToFile(result, url_content);
 	pagedir_save(seedURLwp, pageDirectory, next_doc_ID);
 
+
+	bag_t *bag = malloc(sizeof(bag_t));
+	hashtable_t *ht = malloc(sizeof(hashtable_t));
+
+
+
+	pageScan(seedURLwp, bag, ht);
+
+
 // printf("C Seed URL: %s\n", seedURL);
       // printf("C Page Directory: %s\n", pageDirectory);
       // printf("C Max Depth: %d\n", maxDepth);
@@ -80,8 +91,49 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
  * Scans a webpage for URLs.
  */
 static void pageScan(webpage_t *page, bag_t *pagesToCrawl, hashtable_t *pagesSeen) {
-	// Fill in with your implementation
+
+    const char *startPattern = "<a href=\"";
+    const char *endPattern = "\">";
+    const char *current = page->html;
+    const char *start, *end;
+
+    while ((start = strstr(current, startPattern)) != NULL) {
+        start += strlen(startPattern);  // Move past the start pattern
+        end = strstr(start, endPattern);
+
+        if (end != NULL) {
+            // Calculate the length of the URL
+            ptrdiff_t urlLength = end - start;
+
+            // Allocate memory to store the URL
+            char *url = (char *)malloc((urlLength + 1) * sizeof(char));
+            if (url == NULL) {
+                fprintf(stderr, "Memory allocation failed\n");
+                exit(EXIT_FAILURE);
+            }
+
+            // Copy the URL and add a null terminator
+            strncpy(url, start, urlLength);
+            url[urlLength] = '\0';
+
+            // Print the URL
+            printf("URL Found: %s\n", url);
+
+
+
+
+            // Free the allocated memory
+            free(url);
+
+            // Move the current pointer to after the end pattern
+            current = end + strlen(endPattern);
+        } else {
+            // End pattern not found, break from the loop
+            break;
+        }
+    }
 }
+
 
 int main(const int argc, char *argv[]) {
 	// Fill in with your implementation
