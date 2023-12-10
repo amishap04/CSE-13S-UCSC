@@ -5,6 +5,12 @@
 #include "crawler.h"
 #include "curl.h"
 #include "url.h"
+#include <unistd.h>
+
+
+char *baseURL;
+
+
 
 static void pageScan(webpage_t *page, bag_t *pagesToCrawl, hashtable_t *pagesSeen);
 
@@ -25,6 +31,11 @@ bool containsMailto(const char *str);
 bool isStringEmpty(const char *str);
 
 void removeLastCharIfQuote(char *str);
+
+void setGlobalStr(const char *value);
+
+void removeFirstCharIfQuote(char *str);
+
 
 
 /**
@@ -49,6 +60,8 @@ static void parseArgs(const int argc, char *argv[], char **seedURL, char **pageD
  */
 static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
       
+	setGlobalStr(seedURL);
+
 	int next_doc_ID = 1;
 
 	bag_t *url_bag = create_bag();
@@ -70,10 +83,10 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 		webpage_t * currentWP = dequeue(url_bag);
 		currentWP->html = download(currentWP->url, &currentWP->length);
 
-		printf("URL under process is: %s\n", currentWP->url);
+		// printf("URL under process is: %s\n", currentWP->url);
 
 		if(!isStringEmpty(currentWP->html)){
-			printf("URL being saved is %s\n", currentWP->url);
+			// printf("URL being saved is %s\n", currentWP->url);
 
 
 			pagedir_save(currentWP, pageDirectory, next_doc_ID++);
@@ -81,26 +94,20 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 			printf("URL saved %s\n", currentWP->url);
 		}
 
+	
 
-		// pagedir_save(currentWP, pageDirectory, next_doc_ID++);
-		// hashtable_t *ht = malloc(sizeof(hashtable_t)); // TO BE FINISHED
-		
-
-		printf("Depth is: %d", currentWP->depth);
-		printf("Max Depth is: %d", maxDepth);
+		// printf("Depth is: %d", currentWP->depth);
+		// printf("Max Depth is: %d", maxDepth);
 		
 		if(currentWP->depth <= maxDepth){
 			pageScan(currentWP,url_bag, seenURLTable);
 		}
 
-		// pageScan(currentWP,url_bag, seenURLTable);
-	
-		// printf("next doc id is: %d\n",next_doc_ID);
-		// if(next_doc_ID > 2){
-			//break;
-		// }
-
+		sleep(1);
 	}	
+
+	free(baseURL);
+	
 
 }
 
@@ -113,8 +120,8 @@ static void pageScan(webpage_t *page, bag_t *pagesToCrawl, hashtable_t *pagesSee
 
 
 
-    const char *startPattern = "<a href=\"";
-    const char *endPattern = "\">";
+    const char *startPattern = "<a href=";
+    const char *endPattern = ">";
     const char *current = page->html;
     const char *start, *end;
 
@@ -150,20 +157,28 @@ while ((start = strstr(current, startPattern)) != NULL) {
         		*spaceChar = '\0'; // Replace the space with a null terminator
     		}
 
+	   removeFirstCharIfQuote(url);
+	   removeLastCharIfQuote(url);
+
+
+
 	    if(!endsWithHash(url)){
 
 
 		// removeLastCharIfQuote(url);
 
-		url = normalizeURL(page->url,url);
+		// url = normalizeURL(page->url,url);
+	        url = normalizeURL(baseURL, url);
 
+	        removeFirstCharIfQuote(url);
 		removeLastCharIfQuote(url);
  
          	if(url != NULL){
 
 			if(!contains_in_hashtable(pagesSeen, url)){
 
-				if(isInternalURL(page->url,url) == true){
+				// if(isInternalURL(page->url,url) == true){
+				if(isInternalURL(baseURL,url) == true){
                                  childURL = malloc(sizeof(webpage_t));
                                  childURL->url = url;
                                  childURL->depth = child_url_depth;
@@ -348,6 +363,26 @@ void removeLastCharIfQuote(char *str) {
         str[len - 1] = '\0'; // Replace the last character with a null terminator
     }
 }
+
+
+void setGlobalStr(const char *value) {
+    // Allocate memory and copy the string
+    baseURL = malloc(strlen(value) + 1); // +1 for the null terminator
+    if (baseURL != NULL) {
+        strcpy(baseURL, value);
+    }
+}
+
+
+void removeFirstCharIfQuote(char *str) {
+    if (str != NULL && str[0] == '\"') {
+        // Shift all characters one position to the left
+        memmove(str, str + 1, strlen(str));
+    }
+}
+
+
+
 
 
 
