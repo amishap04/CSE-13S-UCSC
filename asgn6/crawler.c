@@ -24,6 +24,8 @@ bool containsMailto(const char *str);
 
 bool isStringEmpty(const char *str);
 
+void removeLastCharIfQuote(char *str);
+
 
 /**
  * Parses command-line arguments, placing the corresponding values into the pointer arguments seedURL,
@@ -82,7 +84,11 @@ static void crawl(char *seedURL, char *pageDirectory, const int maxDepth) {
 
 		// pagedir_save(currentWP, pageDirectory, next_doc_ID++);
 		// hashtable_t *ht = malloc(sizeof(hashtable_t)); // TO BE FINISHED
+		
 
+		printf("Depth is: %d", currentWP->depth);
+		printf("Max Depth is: %d", maxDepth);
+		
 		if(currentWP->depth <= maxDepth){
 			pageScan(currentWP,url_bag, seenURLTable);
 		}
@@ -146,7 +152,12 @@ while ((start = strstr(current, startPattern)) != NULL) {
 
 	    if(!endsWithHash(url)){
 
+
+		// removeLastCharIfQuote(url);
+
 		url = normalizeURL(page->url,url);
+
+		removeLastCharIfQuote(url);
  
          	if(url != NULL){
 
@@ -331,7 +342,12 @@ bool isStringEmpty(const char *str) {
     return str == NULL || *str == '\0';
 }
 
-
+void removeLastCharIfQuote(char *str) {
+    size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\"') {
+        str[len - 1] = '\0'; // Replace the last character with a null terminator
+    }
+}
 
 
 
