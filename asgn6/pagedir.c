@@ -1,6 +1,7 @@
 #include "pagedir.h"
 #include <string.h>
 
+int endsWithSlash(const char *str);
 
 bool pagedir_init(const char *pageDirectory) {
 	// Fill in with your implementation
@@ -36,6 +37,7 @@ void pagedir_save(const webpage_t *page, const char *pageDirectory, const int do
 	// creating filename first
 	char str2[200];
 
+
         // Concatenate str2 onto result
         sprintf(str2, "%d", documentID);
 
@@ -45,6 +47,11 @@ void pagedir_save(const webpage_t *page, const char *pageDirectory, const int do
 
         // Copy str1 into result
         strcpy(filename, pageDirectory);
+
+	if(endsWithSlash(pageDirectory) == 0){
+                    strcat(filename, "/");
+            }
+
         strcat(filename, str2);
 
 
@@ -71,3 +78,16 @@ printf("write");
 printf("written");
     fclose(file);  // Close the file
 }
+
+
+int endsWithSlash(const char *str) {
+    int len = strlen(str);
+
+    // Check if the string is not empty and the last character is '/'
+    if (len > 0 && str[len - 1] == '/') {
+        return 1; // True, ends with '/'
+    }
+
+    return 0; // False, does not end with '/'
+}
+

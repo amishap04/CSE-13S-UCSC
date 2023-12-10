@@ -36,6 +36,7 @@ void setGlobalStr(const char *value);
 
 void removeFirstCharIfQuote(char *str);
 
+void appendSlashIfNeeded(char **str);
 
 
 /**
@@ -50,7 +51,12 @@ static void parseArgs(const int argc, char *argv[], char **seedURL, char **pageD
 
     *seedURL = argv[1];
     *pageDirectory = argv[2];
+    // printf("%s\n", &argv[2]);
+
 	// add check for last character to be "/"
+
+    // appendSlashIfNeeded(pageDirectory);
+
     *maxDepth = atoi(argv[3]);
 
 }
@@ -382,9 +388,19 @@ void removeFirstCharIfQuote(char *str) {
 }
 
 
+void appendSlashIfNeeded(char **str) {
+    int len = strlen(*str);
 
+    // Check if the last character is not '/'
+    if ((*str)[len - 1] != '/') {
+        // Reallocate memory for the new size (+2 for the new character and the null terminator)
+        *str = (char *)realloc(*str, len + 2);
 
-
+        // Append '/' and null-terminator
+        (*str)[len] = '/';
+        (*str)[len + 1] = '\0';
+    }
+}
 
 
 
